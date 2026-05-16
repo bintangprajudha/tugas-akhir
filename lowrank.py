@@ -17,7 +17,6 @@ from sklearn.svm import SVC
 from sklearn.preprocessing import StandardScaler, label_binarize
 from sklearn.metrics import (accuracy_score, classification_report, confusion_matrix,
                              roc_auc_score, roc_curve, auc)
-from sklearn.model_selection import GridSearchCV
 import matplotlib.pyplot as plt
 import seaborn as sns
 import cv2
@@ -319,7 +318,7 @@ for rank in ranks_to_test:
     model_lr.save(cnn_path_lr)
     extractor_lr.save(ext_path_lr)
     
-    # Train SVM with GridSearch
+    # Train SVM with consistent hyperparameters
     print(f"  Training SVM...")
     X_train_lr = extractor_lr.predict(X_train, verbose=0, batch_size=16)
     X_valid_lr = extractor_lr.predict(X_valid, verbose=0, batch_size=16)
@@ -329,15 +328,9 @@ for rank in ranks_to_test:
     y_combined = np.concatenate([y_train_int, y_valid_int])
     X_scaled = scaler_lr.fit_transform(X_combined)
     
-    param_grid = {
-        'C': [0.1, 1, 10],
-        'gamma': ['scale', 'auto'],
-        'class_weight': ['balanced']
-    }
-    grid = GridSearchCV(SVC(kernel='rbf', probability=True, random_state=42),
-                       param_grid, cv=3, scoring='f1_weighted', n_jobs=-1)
-    grid.fit(X_scaled, y_combined)
-    svm_lr = grid.best_estimator_
+    # Use same hyperparameters as baseline (from training)
+    svm_lr = SVC(kernel='rbf', C=1.0, gamma='scale', probability=True, random_state=42)
+    svm_lr.fit(X_scaled, y_combined)
     
     # Save SVM & scaler
     joblib.dump(svm_lr, f"artifacts/svm_lowrank_r{rank}.pkl")
@@ -361,11 +354,11 @@ for rank in ranks_to_test:
           f"Size={get_file_size_kb(cnn_path_lr):.2f} KB")
 
 # ============================================================================
-# COMPARISON TABLE
+# COMPREHENSIVE COMPARISON TABLE
 # ============================================================================
-print("\n" + "="*70)
-print("COMPARISON TABLE")
-print("="*70)
+print("\n" + "="*140)
+print("COMPREHENSIVE COMPARISON TABLE - LOW-RANK DECOMPOSITION (SVD)")
+print("="*140)
 
 # Calculate baseline size
 temp_path = "temp.keras"
@@ -381,13 +374,19 @@ comp_data.append({
     "Size (KB)": f"{size_baseline:.2f}",
     "Compression": "1.00x",
     "Accuracy": f"{metrics_orig['accuracy']:.4f}",
+    "Sensitivity": f"{metrics_orig['sensitivity']:.4f}",
+    "Specificity": f"{metrics_orig['specificity']:.4f}",
+    "Precision": f"{metrics_orig['precision']:.4f}",
+    "F1-Score": f"{metrics_orig['f1']:.4f}",
     "AUC": f"{metrics_orig['auc_macro']:.4f}",
-    "Feat Time (ms)": f"{metrics_orig['feat_time']*1000:.2f}",
-    "Total Time (ms)": f"{(metrics_orig['feat_time']+metrics_orig['inf_time'])*1000:.2f}"
+    "Feat Ext (ms)": f"{metrics_orig['feat_time']*1000:.2f}",
+    "SVM Inf (ms)": f"{metrics_orig['inf_time']*1000:.2f}",
+    "Total (ms)": f"{(metrics_orig['feat_time']+metrics_orig['inf_time'])*1000:.2f}"
 })
 
 for rank in ranks_to_test:
     res = results[rank]
+    metrics_lr = res['metrics']
     comp_ratio = model_orig.count_params() / res['model'].count_params()
     
     comp_data.append({
@@ -396,14 +395,20 @@ for rank in ranks_to_test:
         "Params": f"{res['model'].count_params():,}",
         "Size (KB)": f"{res['size_kb']:.2f}",
         "Compression": f"{comp_ratio:.2f}x",
-        "Accuracy": f"{res['metrics']['accuracy']:.4f}",
-        "AUC": f"{res['metrics']['auc_macro']:.4f}",
-        "Feat Time (ms)": f"{res['metrics']['feat_time']*1000:.2f}",
-        "Total Time (ms)": f"{(res['metrics']['feat_time']+res['metrics']['inf_time'])*1000:.2f}"
+        "Accuracy": f"{metrics_lr['accuracy']:.4f}",
+        "Sensitivity": f"{metrics_lr['sensitivity']:.4f}",
+        "Specificity": f"{metrics_lr['specificity']:.4f}",
+        "Precision": f"{metrics_lr['precision']:.4f}",
+        "F1-Score": f"{metrics_lr['f1']:.4f}",
+        "AUC": f"{metrics_lr['auc_macro']:.4f}",
+        "Feat Ext (ms)": f"{metrics_lr['feat_time']*1000:.2f}",
+        "SVM Inf (ms)": f"{metrics_lr['inf_time']*1000:.2f}",
+        "Total (ms)": f"{(metrics_lr['feat_time']+metrics_lr['inf_time'])*1000:.2f}"
     })
 
 df_comp = pd.DataFrame(comp_data)
 print("\n" + df_comp.to_string(index=False))
+print("\n" + "="*140)
 
 # ============================================================================
 # VISUALIZATIONS
