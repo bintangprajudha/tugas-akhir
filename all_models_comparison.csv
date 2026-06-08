@@ -1,0 +1,22 @@
+Method,Model,Size (KB),Compression Rate,Accuracy,Recall,Specificity,Precision,F1-Score,AUC,Source Folder,Size Source
+Original,Original (CNN+Attn+SVM),6454.7041015625,1.0,0.9937106918238994,0.994535519125683,0.9976689976689976,0.9803921568627451,0.9871441689623508,0.9993956570361723,d:\bintang\skripsi 0606\saved_models_original,feature_extractor.keras + svm_classifier.pkl + feature_scaler.pkl
+Pruning,Pruned 95%,841.95,7.666374608423896,0.8365,0.809,0.9176,0.765,0.7814,0.9371,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 90%,1148.95,5.617915576450237,0.9937,0.9945,0.9977,0.9804,0.9871,0.9966,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 85%,1485.94,4.343852444622596,0.9937,0.9945,0.9977,0.9804,0.9871,0.997,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 80%,1817.08,3.5522399132468028,0.9874,0.9905,0.9943,0.9749,0.9824,0.9986,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 70%,2431.16,2.65498942955729,0.9874,0.9905,0.9943,0.9749,0.9824,0.9991,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 60%,3027.8,2.131813231244633,0.9937,0.9945,0.9977,0.9804,0.9871,0.9998,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Pruning,Pruned 50%,3609.88,1.788066113433826,0.9874,0.9905,0.9943,0.9749,0.9824,0.9999,d:\bintang\skripsi 0606\saved_models_pruning_20260606_233059,GZIP (KB) from pruning comparison_table.json
+Low-Rank,Low-Rank r=2,966.2041015625,6.680476817604329,0.9434,0.9355,0.978,0.8779,0.897,0.9937,d:\bintang\skripsi 0606\saved_models_lowrank_20260606_235704,rank_2/extractor + svm + scaler
+Low-Rank,Low-Rank r=4,1765.2197265625,3.6566009343958927,0.9371,0.909,0.9707,0.8705,0.8866,0.9899,d:\bintang\skripsi 0606\saved_models_lowrank_20260606_235704,rank_4/extractor + svm + scaler
+Low-Rank,Low-Rank r=6,2538.6103515625,2.542613165344444,0.9811,0.9864,0.993,0.9474,0.9646,0.9988,d:\bintang\skripsi 0606\saved_models_lowrank_20260606_235704,rank_6/extractor + svm + scaler
+Low-Rank,Low-Rank r=8,3308.4853515625,1.9509544143860675,0.9874,0.9737,0.9933,0.9752,0.9744,0.9974,d:\bintang\skripsi 0606\saved_models_lowrank_20260606_235704,rank_8/extractor + svm + scaler
+Low-Rank,Low-Rank r=12,4988.95703125,1.2937982951409088,0.3836,0.3333,0.6667,0.1279,0.1848,0.5,d:\bintang\skripsi 0606\saved_models_lowrank_20260606_235704,rank_12/extractor + svm + scaler
+PTQ,INT8,1651.978515625,3.907256686761731,0.9937,0.9945,0.9977,0.9804,0.9871,0.9994,d:\bintang\skripsi 0606\saved_models_ptq_20260608_200513,extractor_int8.tflite + svm_int8.pkl + scaler_int8.pkl
+PTQ,FP16,3237.154296875,1.9939439117231992,0.9937,0.9945,0.9977,0.9804,0.9871,0.9994,d:\bintang\skripsi 0606\saved_models_ptq_20260608_200513,extractor_fp16.tflite + svm_fp16.pkl + scaler_fp16.pkl
+Dynamic Quantization,INT8 Dynamic,1651.330078125,3.908790972239471,0.9937,0.9945,0.9977,0.9804,0.9871,0.9994,d:\bintang\skripsi 0606\saved_models_dynamic_quant_20260608_203225,extractor_int8_dynamic.tflite + svm_int8.pkl + scaler_int8.pkl
+Dynamic Quantization,FP16 Dynamic,3237.154296875,1.9939439117231992,0.9937,0.9945,0.9977,0.9804,0.9871,0.9994,d:\bintang\skripsi 0606\saved_models_dynamic_quant_20260608_203225,extractor_fp16_dynamic.tflite + svm_fp16.pkl + scaler_fp16.pkl
+QAT,QAT INT8,1637.564453125,3.941648885480414,0.9937,0.9945,0.9977,0.9804,0.9871,0.9998,d:\bintang\skripsi 0606\saved_models_qat_20260606_170334,qat_int8.tflite + svm_int8.pkl + scaler_int8.pkl
+QAT,QAT FP16,3232.060546875,1.9970863812571193,0.9874,0.9891,0.9933,0.9764,0.9823,1.0,d:\bintang\skripsi 0606\saved_models_qat_20260606_170334,qat_fp16.tflite + svm_fp16.pkl + scaler_fp16.pkl
+QAT Dynamic,QAT INT8 Dynamic,6397.369140625,1.0089622717834754,0.9937,0.9945,0.9977,0.9804,0.9871,0.9998,d:\bintang\skripsi 0606\saved_models_qat_dynamic_20260608_205807,qat_dynamic_int8.tflite + svm_int8.pkl + scaler_int8.pkl
+QAT Dynamic,QAT FP16 Dynamic,6397.376953125,1.0089610396350799,0.9937,0.9945,0.9977,0.9804,0.9871,0.9998,d:\bintang\skripsi 0606\saved_models_qat_dynamic_20260608_205807,qat_dynamic_fp16.tflite + svm_fp16.pkl + scaler_fp16.pkl
